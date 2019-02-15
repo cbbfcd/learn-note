@@ -5,4 +5,5 @@
 ## 目录
 
 - [x] [1. WTF is JSX](./wtf-jsx.md)</br>
-- [ ] [2. hyperscript 学习笔记](./hyperscript.md)</br>
+- [x] [2. 关于 JSX](./jsx.md)</br>
+- [ ] [3. hyperscript 学习笔记](./hyperscript.md)</br>
