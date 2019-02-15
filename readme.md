@@ -21,8 +21,25 @@
 
 - [ ] [1. Electron 学习笔记](./electron-learn-note/readme.md)</br>
 
+#### 构建工具
+
+- [ ] [1. webpack 学习笔记](./webpack-learn-note/readme.md)</br>
+
+#### 转译
+
+- [ ] [1. babel 学习笔记](./babel-learn-note/readme.md)</br>
+
 #### 基础
 
 - [ ] [1. ES6 学习笔记](./es6-learn-note/readme.md)</br>
 - [ ] [2. CSS3 学习笔记](./css3-learn-note/readme.md)</br>
 - [ ] [2. ES5 规范学习笔记](./es5-learn-note/readme.md)</br>
+
+#### 翻译系列
+
+- [ ] [1. 翻译系列](./translate/readme.md)</br>
+
+#### 热门博客
+
+
+#### 推荐项目
