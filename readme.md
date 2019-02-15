@@ -25,3 +25,4 @@
 
 - [ ] [1. ES6 学习笔记](./es6-learn-note/readme.md)</br>
 - [ ] [2. CSS3 学习笔记](./css3-learn-note/readme.md)</br>
+- [ ] [2. ES5 规范学习笔记](./es5-learn-note/readme.md)</br>
