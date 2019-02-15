@@ -37,7 +37,7 @@
 
 #### 翻译系列
 
-- [ ] [1. 翻译系列](./translate/readme.md)</br>
+- [ ] [1. 翻译系列](./translation/README.md)</br>
 
 #### 热门博客
 
