@@ -10,22 +10,22 @@
 
 ## 性能优化
 
-[1. 图片性能（上半部分）](./optimiztion/essential-image-optimiztion.md)
+- [x] [1. 图片性能（上半部分）](./optimiztion/essential-image-optimiztion.md)
 
 
 ## Webpack
 
-[1. webpack 4: import() and CommonJs](./webpack/wepack4-import-commonjs.md)
+- [x] [1. webpack 4: import() and CommonJs](./webpack/wepack4-import-commonjs.md)
 
 ## JavaScript
 
-[1. How Javascript Works 系列](./js/how-js-works/readme.md)
+- [ ] [1. How Javascript Works 系列](./js/how-js-works/readme.md)
 
 
 ## note
 
 > 这个系列是一些随笔或者博客的原文，放这儿方便修改
 
-[1. 深入模块系统](./note/module.md)
+- [x] [1. 深入模块系统](./note/module.md)
 
 
