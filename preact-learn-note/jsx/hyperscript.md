@@ -4,6 +4,8 @@
 
 [项目地址](https://github.com/hyperhype/hyperscript)
 
+⚠️ 项目地址的文档是快速了解项目的最好方式！
+
 ## 源码分析
 
 - [ ] [源码分析](./hyperscript.js)
