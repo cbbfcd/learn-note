@@ -100,17 +100,85 @@ function context(){
               )
             }
           }
-          // 处理样式
-          else if(k === 'style') { 
-
+          // 处理样式,分为字符串和对象两种情况(这里可以提一个PR支持自定义样式的情况 --*)
+          else if(k === 'style') {
+            if('string' === l[k]){
+              e.style.cssText = l[k]
+            }else {
+              for(var s in l[k]) (function(s, v){
+                if('function' === typeof v) {
+                  // 还是 observable 的情况
+                  e.style.setProperty(s, v())
+                  cleanupFuncs.push(
+                    v(function(val){
+                      e.style.setProperty(s, val)
+                    })
+                  )
+                } else {
+                  // 如果有优先级的话，style.setProperty(propertyName, value, priority);
+                  // https://developer.mozilla.org/en-US/docs/Web/API/CSSStyleDeclaration/setProperty
+                  var match = l[k][s].match(/(.*)\W+!important\W*$/)
+                  if(match){
+                    e.style.setProperty(s, match[1], 'important')
+                  }else{
+                    e.style.setProperty(s, l[k][s])
+                  }
+                }
+              })(s, l[k][s])
+            }
+          }
+          // 属性
+          else if(k === 'attrs') {
+            for(var v in l[k]) {
+              e.setAttribute(v, l[k][v])
+            }
+          }
+          // 自定义属性
+          else if(k.substr(0, 5) === 'data-') {
+            e.setAttribute(k, l[k])
+          } else {
+            e[k] = l[k]
           }
         }
       }
+      else if('function' === typeof l) {
+        // observable
+        var v = l()
+        e.appendChild(
+          r = isNode(v) ? v : document.createTextNode(v)
+        )
+
+        cleanupFuncs.push(
+          l(function(v){
+            // https://developer.mozilla.org/zh-CN/docs/Web/API/Node/parentElement
+            if(isNode(v) && r.parentElement){
+              // replacedNode = parentNode.replaceChild(newChild, oldChild);
+              r.parentElement.replaceChild(v, r), r = v
+            }else {
+              // https://developer.mozilla.org/zh-CN/docs/Web/API/Node/textContent
+              r.textContent = v
+            }
+          })
+        )
+      }
+
+      return r
     }
+
+    // 反正是DFS
+    while(args.length) {
+      item(args.shift())
+    }
+
+    return e
   }
 
+  // 清除函数
   h.cleanup = function () {
-    
+    for(var i = 0, len = cleanupFuncs.length; i < len; i++) {
+      cleanupFuncs[i]()
+    }
+    cleanupFuncs.length = 0
   }
 
   return h
