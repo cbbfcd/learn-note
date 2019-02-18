@@ -20,6 +20,10 @@
 - [ ] [1. Redux 学习笔记](./redux-learn-note/readme.md)</br>
 - [ ] [2. Mobx 学习笔记](./mobx-learn-note/readme.md)</br>
 
+#### 数据库
+
+- [ ] [1. redis 学习笔记](./redis-learn-note/readme.md)</br>
+
 #### 桌面开发
 
 - [ ] [1. Electron 学习笔记](./electron-learn-note/readme.md)</br>
