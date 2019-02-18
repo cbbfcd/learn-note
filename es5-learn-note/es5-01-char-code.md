@@ -520,7 +520,9 @@ console.log('hello'.length) // => 5
 
 1. 补充平面(代理对)的情况
 
-`ES6` 提供了一种算法可以识别补充平面码点，即使被编译成两个码元（代理对）也会被认为是一个字符。它就是 [String.prototype[@@iterator]()](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/@@iterator)。
+`ES6` 提供了一种算法可以识别补充平面码点，即使被编译成两个码元（代理对）也会被认为是一个字符。
+
+它就是 [```String.prototype[@@iterator]()```](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/@@iterator)。
 
 所以会调用字符迭代器的 `[...str]` 以及 `Array.from(str)` 等，可以解决这个问题吗？
 

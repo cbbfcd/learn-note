@@ -8,4 +8,4 @@
 
 ## 源码分析
 
-- [ ] [源码分析](./hyperscript.js)
+- [x] [源码分析](./hyperscript.js)
