@@ -42,6 +42,10 @@
 
 - [ ] [1. 翻译系列](./translation/README.md)</br>
 
+#### 读书笔记
+
+- [ ] [1. 高性能 JavaScript](./book-read-note/high-performance-js/readme.md)
+
 #### 热门博客
 
 
