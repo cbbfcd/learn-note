@@ -23,6 +23,56 @@ export default class Flip {
     this.playerCache[name] = player
   }
 
+  static group (flips) {
+
+    if(!Array.isArray(flips))
+      throw new Error(`group() expects an array`)
+    
+    flips = flips.map(flip => new Flip(flip))
+
+    return {
+      _flips: flips,
+
+      addClass(className) {
+        flips.forEach(flip => flip.addClass(className))
+      },
+
+      removeClass(className) {
+        flips.forEach(flip => flip.removeClass(className))
+      },
+
+      first() {
+        flips.forEach(flip => flip.first())
+      },
+
+      last(lastClassName) {
+
+        flips.forEach((flip, index) => {
+          let cls = lastClassName
+
+          if(Array.isArray(lastClassName))
+            cls = lastClassName[index]
+          
+          if(typeof cls !== 'undefined')
+            flip._target.classList.add(cls)
+        })
+
+        flips.forEach(flip => flip.last())
+      },
+
+      invert() {
+        flips.forEach(flip => flip.invert())
+      },
+
+      play(startTime) {
+        if(!startTime)
+          startTime = window.performance.now()
+
+        flips.forEach(flip => flip.play(startTime))
+      }
+    }
+  }
+
   constructor(options = {}) {
     console.info(`This project is only for learning FLIP technology, please do not use it in production environment. `)
     
@@ -31,7 +81,10 @@ export default class Flip {
       delay: 0,
       easing: 'linear',
       play: 'webAnimationApi',
-      transformOrigin: '0 0 ',
+      transformOrigin: '0 0',
+      waap_fill: 'both',
+      waap_iterationStart: '0.0',
+      waap_iterations: '1',
       transform: true,
       opacity: true
     }
@@ -43,12 +96,11 @@ export default class Flip {
     
     this._start = 0
     this._target = opts.target
-    this._duration = opts.duration
-    this._delay = opts.delay
-    this._easing = opts.easing
-    this._transform = opts.transform
-    this._opacity = opts.opacity
-    this._transformOrigin = opts.transformOrigin
+   
+    Object.keys(opts).forEach(key => {
+      if(opts.hasOwnProperty(key)) this[`_${key}`] = opts[key]
+    })
+    
     const player = Flip.playerCache[opts.play]
 
     if(!player)
@@ -58,7 +110,15 @@ export default class Flip {
       throw new Error(`player must have a play() function.`)
     
     // this binding
-    this._play = player.play.bind(this)
+    this.cleanUpAndFire = this.cleanUpAndFire.bind(this)
+    this.fire = this.fire.bind(this)
+    
+    let f
+    Object.keys(player).forEach(fn => {
+      f = player[fn]
+      this[`_${fn}`] = f.bind(this)
+    })
+
     
     this._first = {
       layout: null,
@@ -76,7 +136,7 @@ export default class Flip {
   }
 
   // tools - get element style
-  _getStyle(element, name) {
+  getStyle(element, name) {
     if(element.currentStyle)
       return element.currentStyle[name]
     else
@@ -84,19 +144,19 @@ export default class Flip {
   }
 
   // tool - add class
-  _addClass(cls) {
+  addClass(cls) {
     if(typeof cls !== 'string') return
     this._target.classList.add(cls)
   }
 
   // tool - remove class
-  _removeClass(cls) {
+  removeClass(cls) {
     if(typeof cls !== 'string') return
     this._target.classList.remove(cls)
   }
 
   // tool -clean
-  _cleanUpAndFire() {
+  cleanUpAndFire() {
     
     this._target.style.transform = null
     this._target.style.transformOrigin = null
@@ -116,11 +176,11 @@ export default class Flip {
     this._invert.a = 0
     this._invert.d = false
 
-    this._fire('flipComplete')
+    this.fire('flipComplete')
   }
 
   // tool - fire an event
-  _fire(evtName, detail=null, bubbles=true, cancelable=true) {
+  fire(evtName, detail=null, bubbles=true, cancelable=true) {
     const e = new CustomEvent(evtName, { detail, bubbles, cancelable })
     this._target.dispatchEvent(e)
   }
@@ -136,15 +196,15 @@ export default class Flip {
   // F - first
   first() {
     this._first.layout = this._target.getBoundingClientRect()
-    this._first.opacity = parseFloat(this._getStyle(this._target, 'opacity'))
+    this._first.opacity = parseFloat(this.getStyle(this._target, 'opacity'))
     return this
   }
 
   // L - last
   last(lastClassName) {
-    if(lastClassName) this._addClass(lastClassName)
+    if(lastClassName) this.addClass(lastClassName)
     this._last.layout = this._target.getBoundingClientRect()
-    this._last.opacity = parseFloat(this._getStyle(this._target, 'opacity'))
+    this._last.opacity = parseFloat(this.getStyle(this._target, 'opacity'))
     return this
   }
 

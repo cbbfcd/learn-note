@@ -7,6 +7,12 @@
   <title>FLIP Preview Demo</title>
   <script src="../dist/flip.js"></script>
   <style>
+    body {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
     #root {
       width: 100vw;
       height: 100vh;
@@ -19,6 +25,7 @@
 </body>
 <script>
   const { Flip } = flip
+  let count = 0
   
   // 生成随机数据
   const colors = ['#1942db', '#193', '#F12', '#798', '#345', '#195243', 'orange', 'pink', '#456334', '#999', '#189', '#255255']
@@ -26,14 +33,14 @@
   // 随机尺寸
   const getSize = (l, r) => Math.round(Math.random() * l + r)
 
-  // list data
+  // 初始化数据
   const listData = colors.map(color => ({
     color,
     width: getSize(100, 20),
     height: getSize(100, 20)
   }))
 
-  // append data to element
+  // 绑定数据
   const appendDataToElement = (target, data) => {
     data.forEach(({color, width, height})=> {
       let div = document.createElement('div')
@@ -44,6 +51,13 @@
       s.display = 'inline-block'
       s.cursor = 'pointer'
       target.appendChild(div)
+      div.cache = {
+        width,
+        height
+      }
+
+      // 预览按钮
+      div.onclick = previewHandler
     })
   }
 
@@ -55,5 +69,64 @@
   }
 
   createDomNode()
+  
+  function previewHandler(e) {
+    count++
+    let target = e.target, style = e.target.style, fp = new Flip({target})
+
+    target.innerText = '点击关闭'
+
+    let w = getSize(500, 200), h = getSize(500, 200)
+    
+    if(count === 1) {
+
+      fp.first()
+
+      // 预览后的样子
+      style.width = w + 'px'
+      style.height = h + 'px'
+      style.overflow = 'auto'
+      style.margin = 'auto'
+      style.boxShadow = '0 0 0 50vmax rgba(0,0,0, 0.8)'
+      style.position = 'fixed'
+      style.left = '0'
+      style.right = '0'
+      style.top = '0'
+      style.bottom = '0'
+      style.zIndex = '10000'
+
+      fp.last()
+      fp.invert()
+      fp.play()
+
+      return
+    }
+
+    if(count >= 2) {
+
+      fp.first()
+
+      target.innerText = ''
+
+      // 恢复
+      style.width = target.cache.width + 'px'
+      style.height = target.cache.height + 'px'
+      style.overflow = 'none'
+      style.margin = 'none'
+      style.boxShadow = 'none'
+      style.position = 'static'
+      style.left = 'none'
+      style.right = 'none'
+      style.top = 'none'
+      style.bottom = 'none'
+      style.zIndex = 'none'
+
+      fp.last()
+      fp.invert()
+      fp.play()
+      
+      count = 0
+    }
+  }
 </script>
 </html>

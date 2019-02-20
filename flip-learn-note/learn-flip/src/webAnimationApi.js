@@ -28,7 +28,10 @@ export default {
     const opts = {
       delay: this._delay,
       duration: this._duration,
-      easing: this._easing
+      easing: this._easing,
+      fill: this._waap_fill,
+      iterationStart: this._waap_iterationStart,
+      iterations: this._waap_iterations
     }
 
     // https://developer.mozilla.org/en-US/docs/Web/API/Web_Animations_API
@@ -37,7 +40,7 @@ export default {
     const _animate = this._target.animate(keyframes, opts)
 
     _animate.onfinish = () => {
-      this._cleanUpAndFire()
+      this.cleanUpAndFire()
     }
 
     return _animate

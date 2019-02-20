@@ -18,4 +18,4 @@
 
 这里就一个 Google 冻结了的 [flip.js](https://github.com/googlearchive/flipjs) 重新改进了一下，做了个实现 flip 技术的小库。
 
-[戳这里进来](./learn-flip)
+[戳这里进来](./learn-flip/README.md)
