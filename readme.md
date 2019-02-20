@@ -40,12 +40,15 @@
 - [ ] [1. babel 学习笔记](./babel-learn-note/readme.md)</br>
 
 
-## 基础
+## JavaScript
 
 - [ ] [1. ES6 学习笔记](./es6-learn-note/readme.md)</br>
-- [ ] [2. CSS3 学习笔记](./css3-learn-note/readme.md)</br>
 - [ ] [2. ES5 规范学习笔记](./es5-learn-note/readme.md)</br>
 
+## CSS
+
+- [ ] [1. CSS3 学习笔记](./css3-learn-note/readme.md)</br>
+- [ ] [2. FLIP 学习笔记](./flip-learn-note/readme.md)</br>
 
 ## 翻译系列
 
@@ -55,7 +58,6 @@
 ## 读书笔记
 
 - [ ] [1. 高性能 JavaScript](./book-read-note/high-performance-js/readme.md)
-
 
 ## 热门博客
 
