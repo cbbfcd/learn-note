@@ -1,4 +1,5 @@
 // web animation api
+'use strict'
 
 export default {
 
@@ -7,7 +8,7 @@ export default {
 
     if(typeof this._easing !== 'string')
       throw new Error(`
-        only support string easing value for now.
+        waap player only support string easing value for now.
         reference: https://www.w3schools.com/jsref/prop_style_transitiontimingfunction.asp.
       `)
 

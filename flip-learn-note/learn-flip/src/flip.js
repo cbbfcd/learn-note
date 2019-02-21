@@ -1,39 +1,9 @@
+'use strict'
+
 export default class Flip {
   
   static get version(){
-    return 'v-1.0.0'
-  }
-
-  static get doc(){
-    return `
-      The original flipjs has stopped maintenance.
-      This library fixes some problems on the basis of the original and expands some of the ways that are suitable for modern browsers.
-      core API（Support for chained calls now）:
-        1. new Flip(config).play().last(className?).invert().play()
-        2. new Flip(config).snapshot(cls?) === new Flip(config).play().last(className?).invert()
-      config:
-        duration: 300,
-        delay: 0,
-        easing: 'linear',
-        play: 'WAAP',
-        transformOrigin: '0 0',
-        waap_fill: 'both',
-        waap_iterationStart: '0.0',
-        waap_iterations: '1',
-        transform: true,
-        opacity: true
-        ...
-      You can use the play to select the animation execution engine you need (a few built-in, you can also expand it yourself).
-
-      How to customize and use the animation engine？
-       - Referring to the built-in animation engine, you only need to write an object that contains the play() function.
-      steps：
-       1. write your player object that must have a play() function.
-       2. look at what includes in 'this' variable， then you maybe will use it.
-       3. first you must call "Flip.extends('yourPlayerName', yourPlayer)"
-       4. then construct the instance with "new Flip(config)", the config must have a property named 'customPlay', like { customPlay: 'yourPlayerName' }
-      finally, be happy!
-    `
+    return '1.0.0'
   }
 
   static extends(name, player){
@@ -103,7 +73,7 @@ export default class Flip {
   }
 
   constructor(options = {}) {
-    console.info(`This project is only for learning FLIP technology, please do not use it in production environment. `)
+    console.warn(`This library is still in the continuous improvement phase, please do not use it in the production environment.`)
     
     const defaultOpts = {
       duration: 300,
@@ -277,7 +247,7 @@ export default class Flip {
 
   // P - play
   play(startTime) {
-    
+
     if(!this._invert.d)
       throw new Error('U must call invert() brfore play()')
 

@@ -1,8 +1,8 @@
 (function (global, factory) {
-  typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
-  typeof define === 'function' && define.amd ? define(['exports'], factory) :
-  (global = global || self, factory(global.flip = {}));
-}(this, function (exports) { 'use strict';
+  typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
+  typeof define === 'function' && define.amd ? define(factory) :
+  (global = global || self, global.flip = factory());
+}(this, function () { 'use strict';
 
   // web animation api
 
@@ -13,7 +13,7 @@
 
       if(typeof this._easing !== 'string')
         throw new Error(`
-        only support string easing value for now.
+        waap player only support string easing value for now.
         reference: https://www.w3schools.com/jsref/prop_style_transitiontimingfunction.asp.
       `)
 
@@ -55,42 +55,120 @@
     }
   };
 
+  // requestAnimationFrame
+
+  const clamp = (value, min = Number.NEGATIVE_INFINITY, max = Number.POSITIVE_INFINITY) => Math.min(max, Math.max(min, value));
+
+  var RAF = {
+
+    play(startTime) {
+
+      if(this._easing === 'linear')
+        this._easing = t => t;
+      else if(typeof this._easing !== 'function')
+        throw new Error('the raf player requires that easing be a function.')
+      
+      if(!startTime)
+        this._start = window.performance.now() + this._delay;
+      else
+        this._start = startTime + this._delay;
+      
+      const update = () => {
+        let time = (window.performance.now() - this._start) / this._duration;
+        time = clamp(time, 0, 1);
+        let remappedTime = this._easing(time);
+
+        let _update = {
+          x: this._invert.x * (1 - remappedTime),
+          y: this._invert.y * (1 - remappedTime),
+          sx: this._invert.sx + remappedTime * (1 - this._invert.sx),
+          sy: this._invert.sy + remappedTime * (1 - this._invert.sy),
+          a: this._first.opacity + remappedTime * this._invert.a
+        };
+
+        if(this._transform)
+          this._target.style.transform = `
+          translate(${_update.x}px, ${_update.y}px)
+          scale(${_update.sx}, ${_update.sy})
+        `;
+        if(this._opacity)
+          this._target.style.opacity = _update.a;
+        
+        if(time < 1)
+          requestAnimationFrame(update);
+        else
+          this.cleanUpAndFire();
+      };
+        
+      requestAnimationFrame(update);
+    }
+  };
+
+  // css
+
+  const once = (element, evtName, handler) => {
+    let off;
+    const proxy = (e) => {
+      if(e.target !== element) return
+      handler(element);
+      off();
+    };
+    off = () => element.removeEventListener(evtName, proxy);
+    element.addEventListener(evtName, proxy);
+
+    return off
+  };
+
+  var CSS = {
+
+    play() {
+      
+      if(typeof this._easing !== 'string') 
+        throw new Error(`
+        css player only support string easing value for now.
+      `)
+
+      const transtions = [];
+      if(this._transform)
+        transtions.push('transform');
+      if(this._opacity)
+        transtions.push('opacity');
+
+      this._target.style.transitionProperty = transtions.join(',');
+      this._target.style.transitionTimingFunction = this._easing;
+      this._target.style.transitionDuration = `${this._duration}ms`;
+      this._target.style.transitionDelay = `${this._delay}ms`;
+      if(this._transform)
+        this._target.style.transform = `
+        translate(${this._invert.x}px, ${this._invert.y}px)
+        scale(${this._invert.sx}, ${this._invert.sy})
+      `;
+      if(this._opacity)
+        this._target.style.opacity = this._last.opacity;
+
+      const cleanup = () => {
+        this._target.style.transitionProperty = '';
+        this._target.style.transitionTimingFunction = '';
+        this._target.style.transitionDuration = '';
+        this._target.style.transitionDelay = '';
+        this.cleanUpAndFire();
+      };
+
+      once(this._target, 'transitionend', cleanup);
+
+      requestAnimationFrame(() => {
+        if(this._transform)
+          this._target.style.transform = '';
+        if(this._opacity)
+          this._target.style.opacity = 0;
+      });
+    }
+  };
+
   class Flip {
     
     static get version(){
-      return 'v-1.0.0'
-    }
-
-    static get doc(){
-      return `
-      The original flipjs has stopped maintenance.
-      This library fixes some problems on the basis of the original and expands some of the ways that are suitable for modern browsers.
-      core API（Support for chained calls now）:
-        1. new Flip(config).play().last(className?).invert().play()
-        2. new Flip(config).snapshot(cls?) === new Flip(config).play().last(className?).invert()
-      config:
-        duration: 300,
-        delay: 0,
-        easing: 'linear',
-        play: 'WAAP',
-        transformOrigin: '0 0',
-        waap_fill: 'both',
-        waap_iterationStart: '0.0',
-        waap_iterations: '1',
-        transform: true,
-        opacity: true
-        ...
-      You can use the play to select the animation execution engine you need (a few built-in, you can also expand it yourself).
-
-      How to customize and use the animation engine？
-       - Referring to the built-in animation engine, you only need to write an object that contains the play() function.
-      steps：
-       1. write your player object that must have a play() function.
-       2. look at what includes in 'this' variable， then you maybe will use it.
-       3. first you must call "Flip.extends('yourPlayerName', yourPlayer)"
-       4. then construct the instance with "new Flip(config)", the config must have a property named 'customPlay', like { customPlay: 'yourPlayerName' }
-      finally, be happy!
-    `
+      return '1.0.0'
     }
 
     static extends(name, player){
@@ -160,7 +238,7 @@
     }
 
     constructor(options = {}) {
-      console.info(`This project is only for learning FLIP technology, please do not use it in production environment. `);
+      console.warn(`This library is still in the continuous improvement phase, please do not use it in the production environment.`);
       
       const defaultOpts = {
         duration: 300,
@@ -334,7 +412,7 @@
 
     // P - play
     play(startTime) {
-      
+
       if(!this._invert.d)
         throw new Error('U must call invert() brfore play()')
 
@@ -346,10 +424,9 @@
 
   // built-in extensions
   Flip.extends('WAAP', WAAP);
+  Flip.extends('RAF', RAF);
+  Flip.extends('CSS', CSS);
 
-  exports.Flip = Flip;
-  exports.default = Flip;
-
-  Object.defineProperty(exports, '__esModule', { value: true });
+  return Flip;
 
 }));

@@ -24,11 +24,10 @@
   <div id='root'></div>
 </body>
 <script>
-  const { Flip } = flip
-  let count = 0
+  const Flip = flip
+  let count = 0, fpCache = new Map()
 
   console.log(`版本:${Flip.version}`)
-  console.log('文档\n', Flip.doc)
   
   // 生成随机数据
   const colors = ['#1942db', '#193', '#F12', '#798', '#345', '#195243', 'orange', 'pink', '#456334', '#999', '#189', '#255255']
@@ -61,6 +60,9 @@
 
       // 预览按钮
       div.onclick = previewHandler
+      div.addEventListener('flipComplete', () => {
+        console.info('%c 🚀🚀 动画已经完成啦！', 'background: #F1F1F1; color: #168;')
+      })
     })
   }
 
@@ -75,7 +77,13 @@
   
   function previewHandler(e) {
     count++
-    let target = e.target, style = e.target.style, fp = new Flip({target})
+    let target = e.target, style = e.target.style, fp
+    
+    // cache the fp
+    if(fpCache.has(e.target))
+      fp = fpCache.get(e.target)
+    else
+      fpCache.set(e.target, fp = new Flip({target, play: 'RAF'}))
 
     target.innerText = '点击关闭'
 
