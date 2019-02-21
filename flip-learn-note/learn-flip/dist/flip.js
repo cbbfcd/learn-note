@@ -104,30 +104,31 @@
     }
   };
 
+  const assert = (condition, msg) => {
+    if(!condition)
+      throw new Error(`[flipjs] ${msg}`)
+  };
+
   class Flip {
     
     static get version(){
-      return '1.0.0'
+      return '1.0.1'
     }
 
     static extends(name, player){
-      if(!this.playerCache) 
-        this.playerCache = {};
+      if(!this._cache) this._cache = {};
 
-      if(this.playerCache[name]) 
-        throw new Error(`player ${name} already exists.`)
+      assert(!this._cache[name], `player ${name} already exists.`);
 
-      if(!player.play) 
-        throw new Error(`player must have a play() function.`)
+      assert(!!player.play, `player must have a play() function.`);
 
-      this.playerCache[name] = player;
+      this._cache[name] = player;
     }
 
     static group (flips) {
 
-      if(!Array.isArray(flips))
-        throw new Error(`group() expects an array of config obj.`)
-      
+      assert(Array.isArray(flips), `group() expects an array of config obj.`);
+
       flips = flips.map(flip => new Flip(flip));
 
       return {
@@ -195,8 +196,7 @@
 
       const opts = Object.assign({}, defaultOpts, options);
       
-      if(!opts.target)
-        throw new Error(`the target dom node must be provided.`)
+      assert(opts.target, `the target dom node must be provided.`);
       
       this._start = 0;
       this._target = opts.target;
@@ -205,14 +205,12 @@
         if(opts.hasOwnProperty(key)) this[`_${key}`] = opts[key];
       });
       
-      const player = Flip.playerCache[opts.customPlay ? opts.customPlay : opts.play];
+      const player = Flip._cache[opts.customPlay ? opts.customPlay : opts.play];
 
-      if(!player)
-        throw new Error(`unkown player ${opts.play}.`)
+      assert(player, `unkown player ${opts.customPlay ? opts.customPlay : opts.play}.`);
 
-      if(!player.play)
-        throw new Error(`player must have a play() function.`)
-      
+      assert(player.play, `player must have a play() function.`);
+
       // this binding
       this.cleanUpAndFire = this.cleanUpAndFire.bind(this);
       this.fire = this.fire.bind(this);
@@ -316,11 +314,9 @@
     invert() {
       let willchange = [];
 
-      if(!this._first.layout) 
-        throw new Error(`U must call first() before invert()`)
+      assert(this._first.layout, `please call first() before invert().`);
       
-      if(!this._last.layout) 
-        throw new Error(`U must call last() before invert()`)
+      assert(this._last.layout, `please call last() before invert().`);
 
       const { layout: { left: fleft, top: ftop, width: fwidth, height: fheight }, opacity: fopacity } = this._first;
       const { layout: { left: lleft, top: ltop, width: lwidth, height: lheight }, opacity: lopacity } = this._last;
@@ -352,8 +348,7 @@
     // P - play
     play(startTime) {
 
-      if(!this._invert.d)
-        throw new Error('U must call invert() brfore play()')
+      assert(this._invert.d, `please call invert() brfore play().`);
 
       const ifThereHaveRes = this._play(startTime);
 
