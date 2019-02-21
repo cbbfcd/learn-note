@@ -1,7 +1,7 @@
 // requestAnimationFrame
 'use strict'
 
-const clamp = (value, min = Number.NEGATIVE_INFINITY, max = Number.POSITIVE_INFINITY) => Math.min(max, Math.max(min, value))
+import { assert, clamp } from '../helper'
 
 export default {
 
@@ -9,8 +9,8 @@ export default {
 
     if(this._easing === 'linear')
       this._easing = t => t
-    else if(typeof this._easing !== 'function')
-      throw new Error('the raf player requires that easing be a function.')
+      
+    assert(typeof this._easing === 'function', `the raf player requires that easing be a function.`)
     
     if(!startTime)
       this._start = window.performance.now() + this._delay

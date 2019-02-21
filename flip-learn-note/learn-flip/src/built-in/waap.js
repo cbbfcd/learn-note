@@ -1,16 +1,17 @@
 // web animation api
 'use strict'
 
+import { assert } from '../helper'
+
 export default {
 
   // every extension must have a play function
   play() {
 
-    if(typeof this._easing !== 'string')
-      throw new Error(`
-        waap player only support string easing value for now.
-        reference: https://www.w3schools.com/jsref/prop_style_transitiontimingfunction.asp.
-      `)
+    assert(typeof this._easing === 'string', `
+      waap player only support string easing value for now.
+      reference: https://www.w3schools.com/jsref/prop_style_transitiontimingfunction.asp.
+    `)
 
     const keyframes = [
       {

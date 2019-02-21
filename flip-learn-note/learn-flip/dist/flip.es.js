@@ -1,3 +1,10 @@
+const assert = (condition, msg) => {
+  if(!condition)
+    throw new Error(`[flipjs] ${msg}`)
+};
+
+const clamp = (value, min = Number.NEGATIVE_INFINITY, max = Number.POSITIVE_INFINITY) => Math.min(max, Math.max(min, value));
+
 // web animation api
 
 var WAAP = {
@@ -5,11 +12,10 @@ var WAAP = {
   // every extension must have a play function
   play() {
 
-    if(typeof this._easing !== 'string')
-      throw new Error(`
-        waap player only support string easing value for now.
-        reference: https://www.w3schools.com/jsref/prop_style_transitiontimingfunction.asp.
-      `)
+    assert(typeof this._easing === 'string', `
+      waap player only support string easing value for now.
+      reference: https://www.w3schools.com/jsref/prop_style_transitiontimingfunction.asp.
+    `);
 
     const keyframes = [
       {
@@ -51,16 +57,14 @@ var WAAP = {
 
 // requestAnimationFrame
 
-const clamp = (value, min = Number.NEGATIVE_INFINITY, max = Number.POSITIVE_INFINITY) => Math.min(max, Math.max(min, value));
-
 var RAF = {
 
   play(startTime) {
 
     if(this._easing === 'linear')
       this._easing = t => t;
-    else if(typeof this._easing !== 'function')
-      throw new Error('the raf player requires that easing be a function.')
+      
+    assert(typeof this._easing === 'function', `the raf player requires that easing be a function.`);
     
     if(!startTime)
       this._start = window.performance.now() + this._delay;
@@ -96,11 +100,6 @@ var RAF = {
       
     requestAnimationFrame(update);
   }
-};
-
-const assert = (condition, msg) => {
-  if(!condition)
-    throw new Error(`[flipjs] ${msg}`)
 };
 
 class Flip {
