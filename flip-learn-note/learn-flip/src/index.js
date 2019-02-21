@@ -1,7 +1,7 @@
 import WAAP from './waap'
 import Flip from './flip'
 
-// extension
+// built-in extensions
 Flip.extends('WAAP', WAAP)
 
 export { Flip }
