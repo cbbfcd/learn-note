@@ -81,6 +81,14 @@
         opacity: true
         ...
       You can use the play to select the animation execution engine you need (a few built-in, you can also expand it yourself).
+
+      How to customize and use the animation engine？
+       - Referring to the built-in animation engine, you only need to write an object that contains the play() function.
+      steps：
+       1. write your player object that must have a play() function.
+       2. look at what includes in 'this' variable， then you maybe will use it.
+       3. first you must call "Flip.extends('yourPlayerName', yourPlayer)"
+       4. then construct the instance with "new Flip(config)", the config must have a property named 'customPlay', like { customPlay: 'yourPlayerName' }
       finally, be happy!
     `
     }
@@ -159,12 +167,13 @@
         delay: 0,
         easing: 'linear',
         play: 'WAAP',
+        customPlay: '',
         transformOrigin: '0 0',
         waap_fill: 'both',
         waap_iterationStart: '0.0',
         waap_iterations: '1',
         transform: true,
-        opacity: true
+        opacity: true,
       };
 
       const opts = Object.assign({}, defaultOpts, options);
@@ -179,7 +188,7 @@
         if(opts.hasOwnProperty(key)) this[`_${key}`] = opts[key];
       });
       
-      const player = Flip.playerCache[opts.play];
+      const player = Flip.playerCache[opts.customPlay ? opts.customPlay : opts.play];
 
       if(!player)
         throw new Error(`unkown player ${opts.play}.`)
@@ -325,15 +334,17 @@
 
     // P - play
     play(startTime) {
+      
       if(!this._invert.d)
         throw new Error('U must call invert() brfore play()')
 
       const ifThereHaveRes = this._play(startTime);
+
       return ifThereHaveRes
     }
   }
 
-  // extension
+  // built-in extensions
   Flip.extends('WAAP', WAAP);
 
   exports.Flip = Flip;

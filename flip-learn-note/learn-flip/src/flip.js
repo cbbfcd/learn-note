@@ -277,10 +277,12 @@ export default class Flip {
 
   // P - play
   play(startTime) {
+    
     if(!this._invert.d)
       throw new Error('U must call invert() brfore play()')
 
     const ifThereHaveRes = this._play(startTime)
+
     return ifThereHaveRes
   }
 }
