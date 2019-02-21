@@ -98,67 +98,6 @@ var RAF = {
   }
 };
 
-// css
-
-const once = (element, evtName, handler) => {
-  let off;
-  const proxy = (e) => {
-    if(e.target !== element) return
-    handler(element);
-    off();
-  };
-  off = () => element.removeEventListener(evtName, proxy);
-  element.addEventListener(evtName, proxy);
-
-  return off
-};
-
-var CSS = {
-
-  play() {
-    
-    if(typeof this._easing !== 'string') 
-      throw new Error(`
-        css player only support string easing value for now.
-      `)
-
-    const transtions = [];
-    if(this._transform)
-      transtions.push('transform');
-    if(this._opacity)
-      transtions.push('opacity');
-
-    this._target.style.transitionProperty = transtions.join(',');
-    this._target.style.transitionTimingFunction = this._easing;
-    this._target.style.transitionDuration = `${this._duration}ms`;
-    this._target.style.transitionDelay = `${this._delay}ms`;
-    if(this._transform)
-      this._target.style.transform = `
-        translate(${this._invert.x}px, ${this._invert.y}px)
-        scale(${this._invert.sx}, ${this._invert.sy})
-      `;
-    if(this._opacity)
-      this._target.style.opacity = this._last.opacity;
-
-    const cleanup = () => {
-      this._target.style.transitionProperty = '';
-      this._target.style.transitionTimingFunction = '';
-      this._target.style.transitionDuration = '';
-      this._target.style.transitionDelay = '';
-      this.cleanUpAndFire();
-    };
-
-    once(this._target, 'transitionend', cleanup);
-
-    requestAnimationFrame(() => {
-      if(this._transform)
-        this._target.style.transform = '';
-      if(this._opacity)
-        this._target.style.opacity = 0;
-    });
-  }
-};
-
 class Flip {
   
   static get version(){
@@ -419,6 +358,5 @@ class Flip {
 // built-in extensions
 Flip.extends('WAAP', WAAP);
 Flip.extends('RAF', RAF);
-Flip.extends('CSS', CSS);
 
 export default Flip;
