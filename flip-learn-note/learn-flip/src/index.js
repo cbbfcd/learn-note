@@ -1,8 +1,8 @@
-import webAnimationApi from './webAnimationApi'
+import WAAP from './waap'
 import Flip from './flip'
 
 // extension
-Flip.extends('webAnimationApi', webAnimationApi)
+Flip.extends('WAAP', WAAP)
 
 export { Flip }
 export default Flip

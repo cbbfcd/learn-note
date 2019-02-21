@@ -1,3 +1,5 @@
+// web animation api
+
 export default {
 
   // every extension must have a play function

@@ -1,4 +1,6 @@
-var webAnimationApi = {
+// web animation api
+
+var WAAP = {
 
   // every extension must have a play function
   play() {
@@ -55,7 +57,25 @@ class Flip {
 
   static get doc(){
     return `
-      hello world!
+      The original flipjs has stopped maintenance.
+      This library fixes some problems on the basis of the original and expands some of the ways that are suitable for modern browsers.
+      core API（Support for chained calls now）:
+        1. new Flip(config).play().last(className?).invert().play()
+        2. new Flip(config).snapshot(cls?) === new Flip(config).play().last(className?).invert()
+      config:
+        duration: 300,
+        delay: 0,
+        easing: 'linear',
+        play: 'WAAP',
+        transformOrigin: '0 0',
+        waap_fill: 'both',
+        waap_iterationStart: '0.0',
+        waap_iterations: '1',
+        transform: true,
+        opacity: true
+        ...
+      You can use the play to select the animation execution engine you need (a few built-in, you can also expand it yourself).
+      finally, be happy!
     `
   }
 
@@ -75,12 +95,15 @@ class Flip {
   static group (flips) {
 
     if(!Array.isArray(flips))
-      throw new Error(`group() expects an array`)
+      throw new Error(`group() expects an array of config obj.`)
     
     flips = flips.map(flip => new Flip(flip));
 
     return {
-      _flips: flips,
+
+      get flips() {
+        return flips
+      },
 
       addClass(className) {
         flips.forEach(flip => flip.addClass(className));
@@ -129,7 +152,7 @@ class Flip {
       duration: 300,
       delay: 0,
       easing: 'linear',
-      play: 'webAnimationApi',
+      play: 'WAAP',
       transformOrigin: '0 0',
       waap_fill: 'both',
       waap_iterationStart: '0.0',
@@ -305,7 +328,7 @@ class Flip {
 }
 
 // extension
-Flip.extends('webAnimationApi', webAnimationApi);
+Flip.extends('WAAP', WAAP);
 
 export default Flip;
 export { Flip };

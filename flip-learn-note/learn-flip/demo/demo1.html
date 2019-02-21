@@ -26,6 +26,9 @@
 <script>
   const { Flip } = flip
   let count = 0
+
+  console.log(`版本:${Flip.version}`)
+  console.log('文档\n', Flip.doc)
   
   // 生成随机数据
   const colors = ['#1942db', '#193', '#F12', '#798', '#345', '#195243', 'orange', 'pink', '#456334', '#999', '#189', '#255255']
@@ -87,7 +90,7 @@
       style.height = h + 'px'
       style.overflow = 'auto'
       style.margin = 'auto'
-      style.boxShadow = '0 0 0 50vmax rgba(0,0,0, 0.8)'
+      style.boxShadow = '0 0 0 50vmax rgba(0,0,0, 0.8)' // 用阴影模拟的遮罩效果
       style.position = 'fixed'
       style.left = '0'
       style.right = '0'
@@ -95,10 +98,7 @@
       style.bottom = '0'
       style.zIndex = '10000'
 
-      fp.last()
-      fp.invert()
-      fp.play()
-
+      fp.last().invert().play()
       return
     }
 
@@ -121,9 +121,7 @@
       style.bottom = 'none'
       style.zIndex = 'none'
 
-      fp.last()
-      fp.invert()
-      fp.play()
+      fp.last().invert().play()
       
       count = 0
     }
