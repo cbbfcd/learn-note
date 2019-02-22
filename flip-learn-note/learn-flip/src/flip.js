@@ -54,32 +54,32 @@ export default class Flip extends FlipCore{
 
   cleanUpAndFire() {
     
-    this._target.style.transform = null
-    this._target.style.transformOrigin = null
-    this._target.style.willChange = null
-    this._target.style.opacity = null
+    const targetStyle = this._target.style, first = this._first, last = this._last, invert = this._invert
 
-    this._first.layout = null
-    this._first.opacity = 0
+    targetStyle.transform = null
+    targetStyle.transformOrigin = null
+    targetStyle.willChange = null
+    targetStyle.opacity = null
 
-    this._last.layout = null
-    this._last.opacity = 0
+    first.layout = null
+    first.opacity = 0
 
-    this._invert.x = 0
-    this._invert.y = 0
-    this._invert.sx = 1
-    this._invert.sy = 1
-    this._invert.a = 0
-    this._invert.d = false
+    last.layout = null
+    last.opacity = 0
+
+
+    invert.x = 0
+    invert.y = 0
+    invert.sx = 1
+    invert.sy = 1
+    invert.a = 0
+    invert.d = false
 
     fire(this._target, 'flipComplete')
   }
 
   snapshot(lastClassName) {
-    this.first()
-    this.last(lastClassName)
-    this.invert()
-    return this
+    return this.first().last(lastClassName).invert()
   }
 
   first() {
