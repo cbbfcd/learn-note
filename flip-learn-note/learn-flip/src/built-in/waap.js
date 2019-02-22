@@ -33,9 +33,10 @@ export default {
       delay: this._delay,
       duration: this._duration,
       easing: this._easing,
-      fill: this._waap_fill,
-      iterationStart: this._waap_iterationStart,
-      iterations: this._waap_iterations
+      fill: this._fill,
+      direction: this._direction,
+      iterationStart: this._iterationStart,
+      iterations: this._iterations
     }
 
     // https://developer.mozilla.org/en-US/docs/Web/API/Web_Animations_API

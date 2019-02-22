@@ -9,17 +9,18 @@ export default class Flip extends FlipCore{
     super()
 
     const defaultOpts = {
+      play: 'WAAP',
+      customPlay: '',
+      transform: true,
+      opacity: true,
       duration: 300,
       delay: 0,
       easing: 'linear',
-      play: 'WAAP',
-      customPlay: '',
+      direction: 'normal',
       transformOrigin: '0 0',
-      waap_fill: 'both',
-      waap_iterationStart: '0.0',
-      waap_iterations: '1',
-      transform: true,
-      opacity: true,
+      fill: 'both',
+      iterationStart: '0.0',
+      iterations: '1',
     }
 
     const opts = Object.assign({}, defaultOpts, options)
@@ -96,7 +97,7 @@ export default class Flip extends FlipCore{
   }
 
   invert() {
-    let willchange = []
+    let willchange = [], targetStyle = this._target.style, invert_ = this._invert
 
     assert(this._first.layout, `please call first() before invert().`)
     assert(this._last.layout, `please call last() before invert().`)
@@ -104,7 +105,7 @@ export default class Flip extends FlipCore{
     const { layout: { left: fleft, top: ftop, width: fwidth, height: fheight }, opacity: fopacity } = this._first
     const { layout: { left: lleft, top: ltop, width: lwidth, height: lheight }, opacity: lopacity } = this._last
 
-    Object.assign(this._invert, {
+    Object.assign(invert_, {
       x: fleft - lleft,
       y: ftop - ltop,
       sx: fwidth / lwidth,
@@ -114,17 +115,17 @@ export default class Flip extends FlipCore{
     })
 
     if(this._transform) {
-      this._target.style.transformOrigin = this._transformOrigin
-      this._target.style.transform = `translate(${this._invert.x}px, ${this._invert.y}px) scale(${this._invert.sx}, ${this._invert.sy})`
+      targetStyle.transformOrigin = this._transformOrigin
+      targetStyle.transform = `translate(${invert_.x}px, ${invert_.y}px) scale(${invert_.sx}, ${invert_.sy})`
       willchange.push('transform')
     }
 
     if(this._opacity) {
-      this._target.style.opacity = fopacity
+      targetStyle.opacity = fopacity
       willchange.push('opacity')
     }
     
-    this._target.style.willChange = willchange.join(',')
+    targetStyle.willChange = willchange.join(',')
     return this
   }
 
