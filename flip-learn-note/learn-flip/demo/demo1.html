@@ -25,6 +25,7 @@
 </body>
 <script>
   const Flip = flip
+
   let count = 0, fpCache = new Map()
 
   console.log(`版本:${Flip.version}`)
@@ -83,7 +84,7 @@
     if(fpCache.has(e.target))
       fp = fpCache.get(e.target)
     else
-      fpCache.set(e.target, fp = new Flip({target, play: 'RAF'}))
+      fpCache.set(e.target, fp = new Flip({target, play: 'WAAP'}))
 
     target.innerText = '点击关闭'
 

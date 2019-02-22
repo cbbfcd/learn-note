@@ -1,7 +1,7 @@
 {
-  "name": "learn-flip",
-  "version": "1.0.0",
-  "description": "Learn FLIP animation tech",
+  "name": "@bobi/flipjs",
+  "version": "1.0.1",
+  "description": "Let google's freeze project on flip technology run again",
   "author": "cbbfcd <2890636389@qq.com>",
   "repository": {
     "type": "git",
@@ -20,7 +20,9 @@
   "devDependencies": {
     "rollup": "^1.0.0",
     "rollup-plugin-commonjs": "^9.2.0",
-    "rollup-plugin-node-resolve": "^4.0.0"
+    "rollup-plugin-filesize": "^6.0.1",
+    "rollup-plugin-node-resolve": "^4.0.0",
+    "rollup-plugin-terser": "^4.0.4"
   },
   "scripts": {
     "build": "rollup -c",
