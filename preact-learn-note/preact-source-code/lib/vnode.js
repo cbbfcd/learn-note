@@ -1,6 +1,6 @@
 // VNode
 // 包含的属性：
-// 1. nodeName, 
+// 1. nodeName, 可以是字符串 'div', 或者是 Component constructor 函数
 // 2. children, 
 // 3. attributes, 
 // 4. key
