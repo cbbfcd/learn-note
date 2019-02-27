@@ -46,7 +46,7 @@ export function setComponentProps(component, props, renderMode, context, mountAl
   // 锁在这儿中断
   component._disable = false
 
-  // 触发重新渲染
+  // 当不是`NO_RENDER`模式的时候，触发重新渲染
   if(renderMode !== NO_RENDER) {
     // 同步更新
     if(renderMode === SYNC_RENDER || options.syncComponentUpdates !== false || !component.base) {
