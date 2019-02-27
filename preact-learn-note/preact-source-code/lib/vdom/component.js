@@ -3,6 +3,7 @@ import { FORCE_RENDER, SYNC_RENDER, NO_RENDER } from '../constants'
 import { getNodeProps } from './index'
 import options from '../options'
 import { enqueueRender } from '../render-queue'
+import { createComponent } from './component-recycler'
 
 /**
  * 设置一个组件的`props`并且可能重新渲染组件
