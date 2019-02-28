@@ -119,7 +119,7 @@ export function renderComponent(component, renderMode, mountAll, isChild) {
   component._dirty = false
 
   if(!skip) {
-    // 返回一个新的 v-node
+    // 返回一个新的 v-node, 这里和 React 的区别是往 render 函数中注入了 props、state、context
     rendered = component.render(props, state, context)
     
     // 传递给子组件的上下文，可以通过（祖先）父组件更新
@@ -140,7 +140,9 @@ export function renderComponent(component, renderMode, mountAll, isChild) {
       let childProps = getNodeProps(rendered)
       inst = initialChildComponent
 
+      // 如果子组件存在就更新 props
       if(inst && inst.constructor === childComponent && childProps.key == inst.__key) {
+        // 递归
         setComponentProps(inst, childProps, SYNC_RENDER, context, false)
       }else {
         toUnmount = inst
