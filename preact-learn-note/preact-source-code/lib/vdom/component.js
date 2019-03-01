@@ -4,6 +4,7 @@ import { getNodeProps } from './index'
 import options from '../options'
 import { enqueueRender } from '../render-queue'
 import { createComponent } from './component-recycler'
+import { diff } from './diff'
 
 /**
  * 设置一个组件的`props`并且可能重新渲染组件
@@ -135,8 +136,9 @@ export function renderComponent(component, renderMode, mountAll, isChild) {
     let childComponent = rendered && rendered.nodeName, toUnmount, base
 
     // 如果 nodeName 是一个函数（h(nodeName, attributes)）
+    // 对应 React 中的元素类型（组件类型）
     if(typeof childComponent === 'function') {
-      // 设置高阶组件连接
+      // 设置高阶组件引用
       let childProps = getNodeProps(rendered)
       inst = initialChildComponent
 
@@ -155,7 +157,25 @@ export function renderComponent(component, renderMode, mountAll, isChild) {
       }
       base = inst.base
     }else {
-      // todo
+      // 对应 React 中的 DOM 元素，非组件类型
+
+      // cbase = component.base || component.nextBase
+      cbase = initialBase
+
+      // 销毁高阶组件的引用
+      toUnmount = initialChildComponent
+      
+      if(toUnmount) {
+        cbase = component._component = null
+      }
+
+      if(initialBase || renderMode === SYNC_RENDER) {
+        if(cbase) cbase._component = null
+
+        // diff, 返回一个真实节点存在 base
+        base = diff(cbase, rendered, context, mountAll || !isUpdate, initialBase && initialBase.parentNode, true)
+      }
     }
+
   }
 }
