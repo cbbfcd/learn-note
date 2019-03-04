@@ -1,10 +1,11 @@
 import { extend, applyRef } from '../util'
-import { FORCE_RENDER, SYNC_RENDER, NO_RENDER } from '../constants'
+import { FORCE_RENDER, SYNC_RENDER, NO_RENDER, ATTR_KEY } from '../constants'
 import { getNodeProps } from './index'
 import options from '../options'
 import { enqueueRender } from '../render-queue'
-import { createComponent } from './component-recycler'
-import { diff } from './diff'
+import { createComponent, recyclerComponents } from './component-recycler'
+import { diff, removeChildren } from './diff'
+import { removeNode } from '../dom'
 
 /**
  * 设置一个组件的`props`并且可能重新渲染组件
@@ -177,5 +178,38 @@ export function renderComponent(component, renderMode, mountAll, isChild) {
       }
     }
 
+    // TODO
+
   }
+}
+
+/**
+ * 从 DOM 中删除组件并回收它
+ * @param {import('../component').Component} component The Component instance to unmount
+*/
+export function unmountComponent(component) {
+  if(options.beforeUnmount) options.beforeUnmount(component)
+
+  let base = component.base
+  component._disable = true
+
+  if(component.componentWillUnMount) component.componentWillUnMount()
+
+  component.base = null
+
+  // recursively tear down & recollect high-order component children:
+  let inner = component._component
+  if(inner) {
+    unmountComponent(inner)
+  }else if(base) {
+    if(base[ATTR_KEY] != null) applyRef(base[ATTR_KEY].ref, null)
+    component.nextBase = base
+
+    removeNode(base)
+    recyclerComponents.push(component)
+
+    removeChildren(base)
+  }
+
+  applyRef(component.__ref, null)
 }
