@@ -49,6 +49,7 @@
 
 - [ ] [1. CSS3 学习笔记](./css3-learn-note/readme.md)</br>
 - [ ] [2. FLIP 学习笔记](./flip-learn-note/readme.md)</br>
+- [ ] [3. CSS权威指南第四版翻译及学习笔记](./css-direction-4/readme.md)</br>
 
 ## 翻译系列
 
