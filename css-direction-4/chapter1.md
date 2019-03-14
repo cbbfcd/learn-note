@@ -2,7 +2,7 @@
 
 ## 1. 历史
 
-- `1994`， `CSS` 首次被提出
+- `1994`，`CSS` 首次被提出
 - `1996`，`CSS1` 完成
 - `1998`，`CSS2` 完成
 - `2012`，`3` 个 `CSS3` 模块和 `CSS2.1` 达成了完整推荐状态
@@ -74,4 +74,35 @@
 这里结合 [display](https://developer.mozilla.org/zh-CN/docs/Web/CSS/display) 展示一个 [行内级块级嵌套例子](https://codesandbox.io/s/0q56z5ppmw)。
 
 ### 2.3 结合 CSS 和 HTML
+
+重点就是几种文档关联 `CSS` 的方式：
+
+1. link
+
+```js
+<link rel="stylesheet" type="text/css" href="sheet1.css" media="all">
+```
+
+> [link](https://developer.mozilla.org/zh-CN/docs/Web/HTML/Element/link)
+
+> [备用样式表](https://developer.mozilla.org/en-US/docs/Web/CSS/Alternative_style_sheets)
+
+2. style
+
+```html
+<style>
+  h1 {color: orange;}
+</style>
+```
+
+3. import
+
+```html
+<style type="text/css">
+@import url(styles.css); /* @import comes first */ 
+h1 {color: gray;}
+</style>
+```
+
+> [@import](https://developer.mozilla.org/zh-CN/docs/Web/CSS/@import)
 
