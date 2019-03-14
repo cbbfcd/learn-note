@@ -69,3 +69,9 @@
 
 行内元素在文本行内生成一个元素盒子，并且不会破坏该行的流。
 
+在 `HTML` 中，块级元素不能作为行内元素的后代；但在 `CSS` 中，对显示角色之间的嵌套没有限制。
+
+这里结合 [display](https://developer.mozilla.org/zh-CN/docs/Web/CSS/display) 展示一个 [行内级块级嵌套例子](https://codesandbox.io/s/0q56z5ppmw)。
+
+### 2.3 结合 CSS 和 HTML
+
