@@ -55,6 +55,8 @@
 
 - [ ] [1. 翻译系列](./translation/README.md)</br>
 
+## 运维/服务
+- [ ] [1. nginx 学习笔记](./nginx-learn-note/readme.md)</br>
 
 ## 读书笔记
 
