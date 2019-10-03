@@ -1,5 +1,7 @@
 # 学习笔记
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/cbbfcd/learn-note.svg)](https://greenkeeper.io/)
+
 之前的学习笔记太乱太零散，所以建立这个项目统一收集起来，方便以后复习巩固。
 
 ⚠️ 如果要转载文章请注明出处。
