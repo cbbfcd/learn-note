@@ -1,0 +1,10 @@
+{
+  "groups": {
+    "default": {
+      "packages": [
+        "flip-learn-note/learn-flip/package.json",
+        "webpack-learn-note/minipack/package.json"
+      ]
+    }
+  }
+}
